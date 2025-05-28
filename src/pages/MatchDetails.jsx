@@ -60,7 +60,6 @@ const MatchDetails = () => {
         ← Back to Home
       </Link>
     </div>
-
       <div className="p-6 min-h-screen bg-white">
         <div className="max-w-4xl mx-auto bg-gray-50 p-6 rounded-lg shadow">
           <h1 className="text-2xl font-bold text-blue-900 mb-4 text-center">Match Details</h1>
