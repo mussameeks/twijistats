@@ -1,0 +1,30 @@
+{
+  "footballLeagues": [
+    {
+      "league_name": "Premier League",
+      "country_name": "England"
+    },
+    {
+      "league_name": "La Liga",
+      "country_name": "Spain"
+    }
+  ],
+  "basketballLeagues": [
+    {
+      "league": {
+        "name": "NBA"
+      },
+      "country": {
+        "name": "USA"
+      }
+    },
+    {
+      "league": {
+        "name": "EuroLeague"
+      },
+      "country": {
+        "name": "Europe"
+      }
+    }
+  ]
+}
