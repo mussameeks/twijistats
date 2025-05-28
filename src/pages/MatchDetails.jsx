@@ -7,6 +7,8 @@ const MatchDetails = () => {
   const { id } = useParams();
   const [match, setMatch] = useState(null);
   const [events, setEvents] = useState([]);
+  const [statistics, setStatistics] = useState([]);
+  const [lineups, setLineups] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -25,6 +27,7 @@ const MatchDetails = () => {
         setLoading(false);
       }
     };
+
     const fetchMatchEvents = async () => {
       try {
         const response = await axios.get(`https://v3.football.api-sports.io/fixtures/events?fixture=${id}`, {
@@ -38,8 +41,36 @@ const MatchDetails = () => {
       }
     };
 
+    const fetchMatchStatistics = async () => {
+      try {
+        const response = await axios.get(`https://v3.football.api-sports.io/fixtures/statistics?fixture=${id}`, {
+          headers: {
+            'x-apisports-key': 'b570f938b5d86fcf521cf630a5ba54b4',
+          },
+        });
+        setStatistics(response.data.response);
+      } catch (err) {
+        console.error('Error fetching match statistics:', err);
+      }
+    };
+
+    const fetchMatchLineups = async () => {
+      try {
+        const response = await axios.get(`https://v3.football.api-sports.io/fixtures/lineups?fixture=${id}`, {
+          headers: {
+            'x-apisports-key': 'b570f938b5d86fcf521cf630a5ba54b4',
+          },
+        });
+        setLineups(response.data.response);
+      } catch (err) {
+        console.error('Error fetching match lineups:', err);
+      }
+    };
+
     fetchMatchDetails();
     fetchMatchEvents();
+    fetchMatchStatistics();
+    fetchMatchLineups();
   }, [id]);
 
   if (loading) return <p className="text-center mt-10 text-gray-600">Loading match details...</p>;
@@ -49,19 +80,12 @@ const MatchDetails = () => {
     <>
       <Header />
       <div className="p-6 min-h-screen bg-white">
-  <div className="max-w-4xl mx-auto bg-gray-50 p-6 rounded-lg shadow">
-    {/* Back Button at the Top */}
-    <div className="mb-4 text-left">
-      <Link
-        to="/"
-        className="inline-block bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 transition"
-      >
-        ← Back to Home
-      </Link>
-    </div>
-      <div className="p-6 min-h-screen bg-white">
         <div className="max-w-4xl mx-auto bg-gray-50 p-6 rounded-lg shadow">
+          <div className="text-right mb-4">
+            <Link to="/" className="text-sm text-blue-600 hover:underline">← Back to Home</Link>
+          </div>
           <h1 className="text-2xl font-bold text-blue-900 mb-4 text-center">Match Details</h1>
+
           <div className="flex justify-between items-center border-b pb-4 mb-4">
             <div className="flex items-center gap-2">
               <img src={match.teams.home.logo} alt="Home Logo" className="w-10 h-10" />
@@ -73,12 +97,14 @@ const MatchDetails = () => {
               <span className="font-semibold text-lg">{match.teams.away.name}</span>
             </div>
           </div>
+
           <div className="text-gray-700 mb-4">
             <p><strong>League:</strong> {match.league.name}</p>
             <p><strong>Stadium:</strong> {match.fixture.venue.name} ({match.fixture.venue.city})</p>
             <p><strong>Kickoff:</strong> {new Date(match.fixture.date).toLocaleString()}</p>
             <p><strong>Status:</strong> {match.fixture.status.long}</p>
           </div>
+
           {events.length > 0 && (
             <div className="mb-6">
               <h2 className="text-lg font-semibold text-blue-900 mb-2">Live Match Events</h2>
@@ -91,10 +117,10 @@ const MatchDetails = () => {
               </ul>
             </div>
           )}
-          
-          {match.statistics ? (
+
+          {statistics.length > 0 ? (
             <div className="grid grid-cols-2 gap-4 text-sm">
-              {match.statistics.map((stat, index) => (
+              {statistics.map((stat, index) => (
                 <div key={index}>
                   <h3 className="font-bold text-blue-800 mb-1">{stat.team.name}</h3>
                   <ul className="text-gray-600">
@@ -109,11 +135,11 @@ const MatchDetails = () => {
             <p className="text-gray-500">No stats available.</p>
           )}
 
-          {match.lineups?.length > 0 && (
+          {lineups.length > 0 && (
             <div className="mt-6">
               <h2 className="text-lg font-semibold text-blue-900 mb-2">Lineups</h2>
               <div className="grid grid-cols-2 gap-6">
-                {match.lineups.map((lineup, index) => (
+                {lineups.map((lineup, index) => (
                   <div key={index}>
                     <h3 className="font-bold text-gray-800 mb-1">{lineup.team.name}</h3>
                     <ul className="text-gray-600 text-sm">
@@ -126,8 +152,6 @@ const MatchDetails = () => {
               </div>
             </div>
           )}
-
-    
         </div>
       </div>
     </>
