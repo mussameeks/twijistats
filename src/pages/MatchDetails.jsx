@@ -11,7 +11,7 @@ const MatchDetails = () => {
   const [leagues, setLeagues] = useState([]);
 
   const rapidAPIHeaders = {
-    'X-RapidAPI-Key': 'a2b2e6987cmsh91ddc6012cbd00dp16cc01jsn5ce76f7384d3',
+    'X-RapidAPI-Key': '7cd3d11941msh4458a4034538702p1941a2jsnd9babb89c913',
     'X-RapidAPI-Host': 'free-api-live-football-data.p.rapidapi.com',
   };
 
