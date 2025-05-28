@@ -50,6 +50,18 @@ const MatchDetails = () => {
     <>
       <Header />
       <div className="p-6 min-h-screen bg-white">
+  <div className="max-w-4xl mx-auto bg-gray-50 p-6 rounded-lg shadow">
+    {/* Back Button at the Top */}
+    <div className="mb-4 text-left">
+      <Link
+        to="/"
+        className="inline-block bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 transition"
+      >
+        ← Back to Home
+      </Link>
+    </div>
+
+      <div className="p-6 min-h-screen bg-white">
         <div className="max-w-4xl mx-auto bg-gray-50 p-6 rounded-lg shadow">
           <h1 className="text-2xl font-bold text-blue-900 mb-4 text-center">Match Details</h1>
 
