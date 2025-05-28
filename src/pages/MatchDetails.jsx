@@ -5,52 +5,51 @@ import Header from '../components/Header';
 
 const MatchDetails = () => {
   const { id } = useParams();
-  const [stats, setStats] = useState([]);
+  const [match, setMatch] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fetchStats = async () => {
+    const fetchMatchDetails = async () => {
       try {
-        const response = await axios.get(`https://v3.football.api-sports.io/fixtures/statistics?fixture=${id}`, {
+        const response = await axios.get(`https://api-football-v1.p.rapidapi.com/v3/fixtures?id=${id}`, {
           headers: {
-            'x-apisports-key': 'b570f938b5d86fcf521cf630a5ba54b4',
+            'X-RapidAPI-Key': 'a2b2e6987cmsh91ddc6012cbd00dp16cc01jsn5ce76f7384d3',
+            'X-RapidAPI-Host': 'api-football-v1.p.rapidapi.com',
           },
         });
-        setStats(response.data.response);
+        setMatch(response.data.response[0]);
       } catch (err) {
-        setError('Failed to fetch match statistics');
+        console.error('Error fetching match details:', err);
+        setError('Failed to load match details.');
       } finally {
         setLoading(false);
       }
     };
-    fetchStats();
+
+    fetchMatchDetails();
   }, [id]);
+
+  if (loading) return <p className="text-center mt-10 text-gray-600">Loading match details...</p>;
+  if (error) return <p className="text-center mt-10 text-red-500">{error}</p>;
+  if (!match) return <p className="text-center mt-10 text-gray-500">No match data available.</p>;
 
   return (
     <>
       <Header />
-      <div className="p-6">
-        <Link to="/" className="text-blue-600 hover:underline">← Back to Matches</Link>
-        <h1 className="text-2xl font-bold mt-4 mb-2">Match Statistics</h1>
-        {loading && <p>Loading statistics...</p>}
-        {error && <p className="text-red-500">{error}</p>}
-        {stats.length > 0 ? (
-          <ul className="space-y-2">
-            {stats.map((teamStat, index) => (
-              <li key={index} className="border-b pb-2">
-                <h2 className="text-xl font-semibold">{teamStat.team.name}</h2>
-                <ul className="ml-4">
-                  {teamStat.statistics.map((stat, idx) => (
-                    <li key={idx}><strong>{stat.type}:</strong> {stat.value}</li>
-                  ))}
-                </ul>
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p>No stats available.</p>
-        )}
+      <div className="p-6 min-h-screen bg-white">
+        <div className="max-w-3xl mx-auto bg-gray-50 p-6 rounded-lg shadow">
+          <h1 className="text-2xl font-bold text-blue-900 mb-4 text-center">Match Details</h1>
+          <div className="text-center mb-4 text-gray-700">
+            <div>{match.teams.home.name} vs {match.teams.away.name}</div>
+            <div>{match.fixture.date}</div>
+            <div>Status: {match.fixture.status.long}</div>
+            <div>Score: {match.goals.home} - {match.goals.away}</div>
+          </div>
+          <div className="text-center">
+            <Link to="/" className="text-blue-600 hover:underline">← Back to Home</Link>
+          </div>
+        </div>
       </div>
     </>
   );
