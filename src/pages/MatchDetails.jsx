@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import axios from 'axios';
@@ -12,13 +13,16 @@ const MatchDetails = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  const rapidAPIHeaders = {
+    'X-RapidAPI-Key': 'a2b2e6987cmsh91ddc6012cbd00dp16cc01jsn5ce76f7384d3',
+    'X-RapidAPI-Host': 'api-football-v1.p.rapidapi.com',
+  };
+
   useEffect(() => {
     const fetchMatchDetails = async () => {
       try {
-        const response = await axios.get(`https://v3.football.api-sports.io/fixtures?id=${id}`, {
-          headers: {
-            'x-apisports-key': 'b570f938b5d86fcf521cf630a5ba54b4',
-          },
+        const response = await axios.get(`https://api-football-v1.p.rapidapi.com/v3/fixtures?id=${id}`, {
+          headers: rapidAPIHeaders,
         });
         setMatch(response.data.response[0]);
       } catch (err) {
@@ -30,10 +34,8 @@ const MatchDetails = () => {
 
     const fetchMatchEvents = async () => {
       try {
-        const response = await axios.get(`https://v3.football.api-sports.io/fixtures/events?fixture=${id}`, {
-          headers: {
-            'x-apisports-key': 'b570f938b5d86fcf521cf630a5ba54b4',
-          },
+        const response = await axios.get(`https://api-football-v1.p.rapidapi.com/v3/fixtures/events?fixture=${id}`, {
+          headers: rapidAPIHeaders,
         });
         setEvents(response.data.response);
       } catch (err) {
@@ -43,10 +45,8 @@ const MatchDetails = () => {
 
     const fetchMatchStatistics = async () => {
       try {
-        const response = await axios.get(`https://v3.football.api-sports.io/fixtures/statistics?fixture=${id}`, {
-          headers: {
-            'x-apisports-key': 'b570f938b5d86fcf521cf630a5ba54b4',
-          },
+        const response = await axios.get(`https://api-football-v1.p.rapidapi.com/v3/fixtures/statistics?fixture=${id}`, {
+          headers: rapidAPIHeaders,
         });
         setStatistics(response.data.response);
       } catch (err) {
@@ -56,10 +56,8 @@ const MatchDetails = () => {
 
     const fetchMatchLineups = async () => {
       try {
-        const response = await axios.get(`https://v3.football.api-sports.io/fixtures/lineups?fixture=${id}`, {
-          headers: {
-            'x-apisports-key': 'b570f938b5d86fcf521cf630a5ba54b4',
-          },
+        const response = await axios.get(`https://api-football-v1.p.rapidapi.com/v3/fixtures/lineups?fixture=${id}`, {
+          headers: rapidAPIHeaders,
         });
         setLineups(response.data.response);
       } catch (err) {
